@@ -1,40 +1,40 @@
 import React, { useState, useEffect } from 'react'
 import './App.css'
 import Navbar from './Navbar'
-import CasesByCountry from './CasesByCountry'
+import Home from './Home'
 import db from './db-config'
 import 'dotenv'
+import AppContext from './AppContext'
 
 function App() {
-  const id = 'U9FpcTq4l3ulBaQAx8dP'
+  let currentViewers
+  const id = process.env.REACT_APP_COLLECTION_ID
   const ref = db.firestore().collection('pantau_covid19')
   const viewersRef = db
     .firestore()
     .collection('pantau_covid19')
     .doc(id)
 
-  useEffect(() => {
-    let currentViewers
-
-    ref
-      .get()
-      .then(snap => {
-        snap.forEach(doc => {
-          currentViewers = doc.data().viewers
-        })
+  ref
+    .get()
+    .then(snap => {
+      snap.forEach(doc => {
+        currentViewers = doc.data().viewers
       })
-      .then(() => {
-        viewersRef.update({
-          viewers: currentViewers + 1
-        })
+    })
+    .then(() => {
+      viewersRef.update({
+        viewers: currentViewers + 1
       })
-  }, [])
+    })
 
   return (
-    <div>
-      <Navbar />
-      <CasesByCountry />
-    </div>
+    <AppContext.ThemeProvider>
+      <AppContext.LanguageProvider>
+        <Navbar />
+        <Home />
+      </AppContext.LanguageProvider>
+    </AppContext.ThemeProvider>
   )
 }
 

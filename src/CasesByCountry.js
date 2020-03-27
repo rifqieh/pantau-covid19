@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import AppContext from './AppContext'
 import {
   Container,
   Card,
@@ -7,9 +8,12 @@ import {
   Table,
   FormControl
 } from 'react-bootstrap'
-import axios from 'axios'
+import axios from './api'
 
 export default () => {
+  const { language, changeLanguage } = useContext(AppContext.LanguageContext)
+  const { theme, changeTheme } = useContext(AppContext.ThemeContext)
+
   const [totalCases, setTotalCases] = useState(0)
   const [totalDeaths, setTotalDeaths] = useState(0)
   const [totalRecovered, setTotalRecovered] = useState(0)
@@ -26,18 +30,12 @@ export default () => {
   }
 
   useEffect(() => {
-    axios({
-      method: 'GET',
-      url:
-        'https://coronavirus-monitor.p.rapidapi.com/coronavirus/worldstat.php',
-      headers: {
-        'content-type': 'application/octet-stream',
-        'x-rapidapi-host': 'coronavirus-monitor.p.rapidapi.com',
-        'x-rapidapi-key': '28ace3fa3dmsha8a82e678f90957p1a2413jsnb7152ef288ed'
-      }
-    })
+    axios
+      .get(
+        'https://coronavirus-monitor.p.rapidapi.com/coronavirus/worldstat.php'
+      )
       .then(response => {
-        console.log(response.data)
+        // console.log(response.data)
         setTotalCases(response.data.total_cases)
         setTotalDeaths(response.data.total_deaths)
         setTotalRecovered(response.data.total_recovered)
@@ -46,18 +44,12 @@ export default () => {
         console.log(error)
       })
 
-    axios({
-      method: 'GET',
-      url:
-        'https://coronavirus-monitor.p.rapidapi.com/coronavirus/cases_by_country.php',
-      headers: {
-        'content-type': 'application/octet-stream',
-        'x-rapidapi-host': 'coronavirus-monitor.p.rapidapi.com',
-        'x-rapidapi-key': '28ace3fa3dmsha8a82e678f90957p1a2413jsnb7152ef288ed'
-      }
-    })
+    axios
+      .get(
+        'https://coronavirus-monitor.p.rapidapi.com/coronavirus/cases_by_country.php'
+      )
       .then(response => {
-        console.log(response.data)
+        // console.log(response.data)
         setDataCountry([...response.data.countries_stat])
         setFilteredCountry([...response.data.countries_stat])
         setDataTakenTime(response.data.statistic_taken_at)
@@ -68,7 +60,7 @@ export default () => {
   }, [])
 
   const handleChangeFilter = e => {
-    console.log(e.target.value)
+    // console.log(e.target.value)
     setFilterText(e.target.value)
     const newFilter = dataCountry.filter(data =>
       data.country_name.toLowerCase().includes(e.target.value.toLowerCase())
@@ -96,11 +88,11 @@ export default () => {
 
   return (
     <Container>
-      <br />
-      <br />
-      <br />
       <CardDeck>
-        <Card bg="dark" text="white">
+        <Card
+          bg={theme === 'dark' ? 'dark' : 'light'}
+          text={theme === 'dark' ? 'light' : 'dark'}
+        >
           <Card.Header style={style.cardHeader}>Total Cases</Card.Header>
           <Card.Body>
             <Card.Title>{totalCases}</Card.Title>
@@ -128,7 +120,7 @@ export default () => {
 
       <br />
 
-      <Card bg="dark">
+      <Card bg={theme === 'dark' ? 'dark' : 'light'}>
         <Card.Body>
           <InputGroup className="mb-3">
             <FormControl
@@ -139,7 +131,13 @@ export default () => {
               onChange={e => handleChangeFilter(e)}
             />
           </InputGroup>
-          <Table striped bordered hover variant="dark" responsive>
+          <Table
+            striped
+            bordered
+            hover
+            variant={theme === 'dark' ? 'dark' : 'light'}
+            responsive
+          >
             <thead>
               <tr>
                 <th>Country Name</th>
