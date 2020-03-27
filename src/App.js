@@ -3,6 +3,7 @@ import './App.css'
 import Navbar from './Navbar'
 import CasesByCountry from './CasesByCountry'
 import db from './db-config'
+import 'dotenv'
 
 function App() {
   const id = 'U9FpcTq4l3ulBaQAx8dP'
