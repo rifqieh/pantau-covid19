@@ -11,8 +11,8 @@ import {
 import axios from './api'
 
 export default () => {
-  const { language, changeLanguage } = useContext(AppContext.LanguageContext)
   const { theme, changeTheme } = useContext(AppContext.ThemeContext)
+  const { language, changeLanguage } = useContext(AppContext.LanguageContext)
 
   const [totalCases, setTotalCases] = useState(0)
   const [totalDeaths, setTotalDeaths] = useState(0)

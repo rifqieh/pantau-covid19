@@ -32,8 +32,8 @@ const FlagButton = props => {
 }
 
 export default () => {
-  const { language, changeLanguage } = useContext(AppContext.LanguageContext)
   const { theme, changeTheme } = useContext(AppContext.ThemeContext)
+  const { language, changeLanguage } = useContext(AppContext.LanguageContext)
   console.log(theme)
 
   return (

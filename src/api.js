@@ -4,6 +4,6 @@ axios.defaults.headers.common['content-type'] = 'application/octet-stream'
 axios.defaults.headers.common['x-rapidapi-host'] =
   'coronavirus-monitor.p.rapidapi.com'
 axios.defaults.headers.common['x-rapidapi-key'] =
-  '28ace3fa3dmsha8a82e678f90957p1a2413jsnb7152ef288ed'
+  process.env.REACT_APP_RAPID_API_KEY
 
 export default axios
