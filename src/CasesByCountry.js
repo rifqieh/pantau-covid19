@@ -6,7 +6,12 @@ import {
   CardDeck,
   InputGroup,
   Table,
-  FormControl
+  FormControl,
+  DropdownButton,
+  Dropdown,
+  Form,
+  Row,
+  Col
 } from 'react-bootstrap'
 import axios from './api'
 
@@ -14,14 +19,12 @@ export default () => {
   const { theme, changeTheme } = useContext(AppContext.ThemeContext)
   const { language, changeLanguage } = useContext(AppContext.LanguageContext)
 
-  const [totalCases, setTotalCases] = useState(0)
-  const [totalDeaths, setTotalDeaths] = useState(0)
-  const [totalRecovered, setTotalRecovered] = useState(0)
-
   const [dataCountry, setDataCountry] = useState([])
-  const [dataTakenTime, setDataTakenTime] = useState('')
+
   const [filteredCountry, setFilteredCountry] = useState([])
   const [filterText, setFilterText] = useState('')
+  const [isAscending, setIsAscending] = useState(true)
+  const [orderBy, setOrderBy] = useState(0)
 
   const style = {
     cardHeader: {
@@ -29,21 +32,9 @@ export default () => {
     }
   }
 
-  useEffect(() => {
-    axios
-      .get(
-        'https://coronavirus-monitor.p.rapidapi.com/coronavirus/worldstat.php'
-      )
-      .then(response => {
-        // console.log(response.data)
-        setTotalCases(response.data.total_cases)
-        setTotalDeaths(response.data.total_deaths)
-        setTotalRecovered(response.data.total_recovered)
-      })
-      .catch(error => {
-        console.log(error)
-      })
+  console.log(dataCountry[0])
 
+  useEffect(() => {
     axios
       .get(
         'https://coronavirus-monitor.p.rapidapi.com/coronavirus/cases_by_country.php'
@@ -52,16 +43,58 @@ export default () => {
         // console.log(response.data)
         setDataCountry([...response.data.countries_stat])
         setFilteredCountry([...response.data.countries_stat])
-        setDataTakenTime(response.data.statistic_taken_at)
       })
       .catch(error => {
         console.log(error)
       })
   }, [])
 
+  const orderByDeath = () => {
+    var newFilter = filteredCountry
+    newFilter.sort((a, b) => {
+      var deathA = a.deaths.replace(/,/g, '.')
+      var deathB = b.deaths.replace(/,/g, '.')
+      if (deathA.includes('.')) deathA = parseInt(parseFloat(deathA) * 1000)
+      else deathA = parseInt(deathA)
+      if (deathB.includes('.')) deathB = parseInt(parseFloat(deathB) * 1000)
+      else deathB = parseInt(deathB)
+
+      console.log(deathA)
+
+      return deathA - deathB
+    })
+    setFilteredCountry([...newFilter])
+  }
+
+  const orderByCases = () => {
+    var newFilter = filteredCountry
+    newFilter.sort((a, b) => {
+      var casesA = a.cases.replace(/,/g, '.')
+      var casesB = b.cases.replace(/,/g, '.')
+      if (casesA.includes('.')) casesA = parseInt(parseFloat(casesA) * 1000)
+      else casesA = parseInt(casesA)
+      if (casesB.includes('.')) casesB = parseInt(parseFloat(casesB) * 1000)
+      else casesB = parseInt(casesB)
+
+      console.log(casesA)
+
+      return casesA - casesB
+    })
+    setFilteredCountry([...newFilter])
+  }
+
+  const handleChangeAscending = () => {
+    var newFilter = filteredCountry
+
+    console.log(newFilter)
+    newFilter.sort()
+    newFilter.reverse()
+
+    setFilteredCountry([...newFilter])
+    console.log(newFilter)
+  }
+
   const handleChangeFilter = e => {
-    // console.log(e.target.value)
-    setFilterText(e.target.value)
     const newFilter = dataCountry.filter(data =>
       data.country_name.toLowerCase().includes(e.target.value.toLowerCase())
     )
@@ -87,50 +120,46 @@ export default () => {
   }
 
   return (
-    <Container>
-      <CardDeck>
-        <Card
-          bg={theme === 'dark' ? 'dark' : 'light'}
-          text={theme === 'dark' ? 'light' : 'dark'}
-        >
-          <Card.Header style={style.cardHeader}>Total Cases</Card.Header>
-          <Card.Body>
-            <Card.Title>{totalCases}</Card.Title>
-          </Card.Body>
-        </Card>
-        <Card bg="danger" text="white">
-          <Card.Header style={style.cardHeader}>Total Deaths</Card.Header>
-          <Card.Body>
-            <Card.Title>{totalDeaths}</Card.Title>
-          </Card.Body>
-        </Card>
-        <Card bg="success" text="white">
-          <Card.Header style={style.cardHeader}>Total Recovered</Card.Header>
-          <Card.Body>
-            <Card.Title>{totalRecovered}</Card.Title>
-          </Card.Body>
-        </Card>
-        <Card bg="info" text="white">
-          <Card.Header style={style.cardHeader}>Statistic Taken At</Card.Header>
-          <Card.Body>
-            <Card.Title>{dataTakenTime}</Card.Title>
-          </Card.Body>
-        </Card>
-      </CardDeck>
-
-      <br />
-
+    <>
       <Card bg={theme === 'dark' ? 'dark' : 'light'}>
         <Card.Body>
-          <InputGroup className="mb-3">
+          <InputGroup>
             <FormControl
-              placeholder="Search Country"
-              aria-label="Search Country"
+              placeholder="Filter Country"
+              aria-label="Filter Country"
               aria-describedby="basic-addon2"
-              value={filterText}
-              onChange={e => handleChangeFilter(e)}
+              // value={filterText}
+              onChange={handleChangeFilter}
             />
+            {/* <DropdownButton
+              id="dropdown-item-button"
+              title="Order By"
+              style={{ marginLeft: '10px' }}
+              variant={theme === 'dark' ? 'outline-light' : 'outline-dark'}
+            >
+              <Dropdown.Item as="button" onClick={orderByCases}>
+                Cases
+              </Dropdown.Item>
+              <Dropdown.Item as="button" onClick={orderByDeath}>
+                Death
+              </Dropdown.Item>
+            </DropdownButton>
+            <DropdownButton
+              id="dropdown-item-button"
+              title="Ascending"
+              style={{ marginLeft: '10px' }}
+              variant={theme === 'dark' ? 'outline-light' : 'outline-dark'}
+            >
+              <Dropdown.Item as="button">Ascending</Dropdown.Item>
+              <Dropdown.Item
+                as="button"
+                onClick={() => handleChangeAscending()}
+              >
+                Descending
+              </Dropdown.Item>
+            </DropdownButton> */}
           </InputGroup>
+          <br />
           <Table
             striped
             bordered
@@ -154,6 +183,6 @@ export default () => {
           </Table>
         </Card.Body>
       </Card>
-    </Container>
+    </>
   )
 }

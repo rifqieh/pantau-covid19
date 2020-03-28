@@ -43,9 +43,12 @@ export default () => {
       variant={theme === 'dark' ? 'dark' : 'light'}
     >
       <Navbar.Brand className="mr-auto">Pantau Covid-19</Navbar.Brand>
-      <Dropdown style={{ marginRight: '1rem' }}>
-        <Dropdown.Toggle variant="info" color="white">
-          Indonesia
+      {/* <Dropdown style={{ marginRight: '1rem' }}>
+        <Dropdown.Toggle
+          variant={theme === 'dark' ? 'outline-light' : 'outline-dark'}
+          color="white"
+        >
+          {language === 'ID' ? 'Indonesia' : 'English'}
         </Dropdown.Toggle>
         <Dropdown.Menu style={{ marginRight: '10rem' }}>
           <FlagButton
@@ -59,7 +62,7 @@ export default () => {
             isActive={language === 'US' ? true : false}
           />
         </Dropdown.Menu>
-      </Dropdown>
+      </Dropdown> */}
       <button
         style={{
           backgroundColor: 'transparent',

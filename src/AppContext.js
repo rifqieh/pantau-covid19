@@ -5,7 +5,7 @@ const AppContext = () => {
   const ThemeContext = createContext()
 
   const LanguageProvider = props => {
-    const [language, setLanguage] = useState('ID')
+    const [language, setLanguage] = useState('US')
     const changeLanguage = newLanguage => setLanguage(newLanguage)
     const languageState = { language, changeLanguage }
 
@@ -17,7 +17,7 @@ const AppContext = () => {
   }
 
   const ThemeProvider = props => {
-    const [theme, setTheme] = useState('light')
+    const [theme, setTheme] = useState('dark')
     const changeTheme = newTheme => setTheme(newTheme)
     const themeState = { theme, changeTheme }
 

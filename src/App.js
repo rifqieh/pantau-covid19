@@ -5,6 +5,7 @@ import Home from './Home'
 import db from './db-config'
 import 'dotenv'
 import AppContext from './AppContext'
+import axios from './api'
 
 function App() {
   let currentViewers
