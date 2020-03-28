@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "f833f5c4323c35d0e83194c5d631c1e4",
+    "revision": "7b06b6f7b92d2750621eb0ea30284f96",
     "url": "/pantau-covid19/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/pantau-covid19/static/css/2.de424728.chunk.css"
   },
   {
-    "revision": "f8e18d76f3989df430e6",
+    "revision": "7dc049d8f75d90ff3bbd",
     "url": "/pantau-covid19/static/css/main.5f361e03.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/pantau-covid19/static/js/2.894ea99f.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "f8e18d76f3989df430e6",
-    "url": "/pantau-covid19/static/js/main.5a268f22.chunk.js"
+    "revision": "7dc049d8f75d90ff3bbd",
+    "url": "/pantau-covid19/static/js/main.3eac7a3d.chunk.js"
   },
   {
     "revision": "ee61f237e223e125c9d6",
