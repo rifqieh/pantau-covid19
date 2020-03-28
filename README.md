@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-CORONA VIRUS MONITOR USING REACT JS
+
+## Corona Virus Monitor using React Js
 
 ## Available Scripts
 
